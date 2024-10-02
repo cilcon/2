@@ -173,6 +173,7 @@ p.a {
 <img id="sellL" src="sellL.png" hidden>
 <img id="sellupd" src="sellupd.png" hidden>
 <img id="endtitle" src="endtitle.png" hidden>
+<img id="endbar" src="endbar.png" hidden>
 
 </body>
 
@@ -387,10 +388,10 @@ if (zov[0]==100){
 if (scene == "END"){
 	if (state==0&&canvasX > 219 && canvasX < 577 && canvasY > 315 && canvasY < 377){stateM=100; nodown=1;}
 	if (nodown==0&&state%100==0){
-		if (ecount[0]<2&&canvasX > 298 && canvasX < 735 && canvasY > 48 && canvasY < 103){stateM+=100; ecount[0]++; atmS[0]+=sArray[-2+stateM/100]+", ";}
-		if (ecount[1]<3&&canvasX > 300 && canvasX < 734 && canvasY > 112 && canvasY < 165){stateM+=100; ecount[1]++; atmS[1]+=sArray[-2+stateM/100]+", ";}
-		if (ecount[2]<4&&canvasX > 301 && canvasX < 733 && canvasY > 177 && canvasY < 225){stateM+=100; ecount[2]++; atmS[2]+=sArray[-2+stateM/100]+", ";}
-		if (ecount[3]<5&&canvasX > 301 && canvasX < 732 && canvasY > 238 && canvasY < 290){stateM+=100; ecount[3]++; atmS[3]+=sArray[-2+stateM/100]+", ";}
+		if (ecount[0]<1&&canvasX > 298 && canvasX < 735 && canvasY > 48 && canvasY < 103){stateM+=100; ecount[0]++; atmS[0]+=sArray[-2+stateM/100]+", ";}
+		if (ecount[1]<2&&canvasX > 300 && canvasX < 734 && canvasY > 112 && canvasY < 165){stateM+=100; ecount[1]++; atmS[1]+=sArray[-2+stateM/100]+", ";}
+		if (ecount[2]<3&&canvasX > 301 && canvasX < 733 && canvasY > 177 && canvasY < 225){stateM+=100; ecount[2]++; atmS[2]+=sArray[-2+stateM/100]+", ";}
+		if (ecount[3]<4&&canvasX > 301 && canvasX < 732 && canvasY > 238 && canvasY < 290){stateM+=100; ecount[3]++; atmS[3]+=sArray[-2+stateM/100]+", ";}
 		if (canvasX > 355 && canvasX < 666 && canvasY > 298 && canvasY < 353){stateM+=100; atmS[4]+=sArray[-2+stateM/100]+", ";}
 		if (fade==0&&sArray.length<stateM/100){
 			atmS[0] = atmS[0].substring(0, atmS[0].length - 2);
@@ -444,7 +445,7 @@ var mat = [0,0,0,0,0,0]; var matS = ["","","","",""];
 }
 //------------------------------------------------------------------
 //IMPORTANT----------------
-var scene = "intro";
+var scene = "M";
 var stateM = 0;
 var state = stateM;
 var focus = "main";
@@ -523,7 +524,10 @@ for (let i = 0; i < celV.length; i++){
 	celV[i]=parseFloat(celV[i].toFixed(2))
 }
 
-//sArray = ["Camila Morrone","Elizabeth Banks","Hannah Jeter","Kelsey Asbille","Gillian Jacobs"];
+
+//sArray = ["Sydney Sweeney","Brie Larson","Emmy Rossum","Sarah Hyland",
+		//	  "Sadie Sink","Amy Adams","Karen Fukuhara","Melissa Fumero",
+		//	  "Katherine McNamara","Emma Roberts"];
 //s2Array = [2.2,5,7,3];
 //sArray = ["Camila Morrone","Elizabeth Banks"];
 
@@ -576,16 +580,19 @@ if (scene == "END"){
 		ctx.drawImage(END2W,0,0,800,400);
 		ctx.font = "700 20px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "center";
 		wrapText(sArray[0], 161,277,174,25,"OFF");
+		ctx.drawImage(endbar,0,0,800,400);
+		ctx.font = "900 15px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "center";
+		ctx.fillText(sArray.length + " CELEBS LEFT",162,353);
 		
 		ctx.font = "900 25px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
-		ctx.fillText("TWICE A WEEK (" + ecount[0] + "/2)",353,84);
-		ctx.fillText("ONCE A WEEK (" + ecount[1] + "/3)",353,84+62);
-		ctx.fillText("TWICE A MONTH (" + ecount[2] + "/4)",353,84+62*2.02);
-		ctx.fillText("ONCE A MONTH (" + ecount[3] + "/5)",353,84+62*3.02);
+		ctx.fillText("TWICE A WEEK (" + ecount[0] + "/1)",353,84);
+		ctx.fillText("ONCE A WEEK (" + ecount[1] + "/2)",353,84+62);
+		ctx.fillText("TWICE A MONTH (" + ecount[2] + "/3)",353,84+62*2.02);
+		ctx.fillText("ONCE A MONTH (" + ecount[3] + "/4)",353,84+62*3.02);
 		ctx.globalAlpha = 1;
 	}
 	
-	for (let i = 1; i < 5; i++){
+	for (let i = 1; i < sArray.length; i++){
 	if (state>0+100*i&&state<200+100*i&&sArray.length>i){
 		ctx.globalAlpha=-i+state/100;
 		ctx.drawImage(END2BG,0,0,800,400);
@@ -594,12 +601,15 @@ if (scene == "END"){
 		ctx.drawImage(END2W,0+state-(i+1)*100,0,800,400);
 		ctx.font = "700 20px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "center";
 		wrapText(sArray[i], 161+state-(i+1)*100,277,174,25,"OFF");
+		ctx.drawImage(endbar,0,0,800,400);
+		ctx.font = "900 15px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "center";
+		ctx.fillText((sArray.length-i) + " CELEBS LEFT",162,353);
 		
 		ctx.font = "900 25px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
-		ctx.fillText("TWICE A WEEK (" + ecount[0] + "/2)",353,84);
-		ctx.fillText("ONCE A WEEK (" + ecount[1] + "/3)",353,84+62);
-		ctx.fillText("TWICE A MONTH (" + ecount[2] + "/4)",353,84+62*2.02);
-		ctx.fillText("ONCE A MONTH (" + ecount[3] + "/5)",353,84+62*3.02);
+		ctx.fillText("TWICE A WEEK (" + ecount[0] + "/1)",353,84);
+		ctx.fillText("ONCE A WEEK (" + ecount[1] + "/2)",353,84+62);
+		ctx.fillText("TWICE A MONTH (" + ecount[2] + "/3)",353,84+62*2.02);
+		ctx.fillText("ONCE A MONTH (" + ecount[3] + "/4)",353,84+62*3.02);
 		ctx.globalAlpha=1;
 	}
 	}
@@ -661,7 +671,8 @@ if (supd-seconds>10){
 		if (atm[2]<2){atm[1]=0.6;}
 		atm[3]=randInt(1,2); if (atm[3]==1){atm[1]=atm[1]*-1;}
 		
-		if (celV[i]+atm[1]<0.1){celV[i]-=atm[1];}
+		
+		if (celV[i]+atm[1]<0.1){celV[i]+=atm[1]*-1; atm[1]=atm[1]*-1;}
 		else{celV[i]+=atm[1];}
 		
 		transV.push(parseFloat(atm[1].toFixed(2)));
@@ -727,19 +738,22 @@ if (mmode=="B"){
 		}
 	}
 	for (let i = 0; i < 5; i++){
-		if (celC[i+curr2] == "Bryce Dallas Howard"){ctx.font = "700 15px Arial";}
-		else if (celC[i+curr2].length<11){ctx.font = "700 17px Arial";}
-		else{ctx.font = "700 16px Arial";}
+		
 		ctx.fillStyle = "black"; ctx.textAlign = "center";
-		wrapText(celC[i+curr2], 238,79+55.6*i,100,25,"OFF");
+		if (celC[i+curr2]=="Bryce Dallas Howard"){ctx.font = "700 15px Arial"; wrapText(celC[i+curr2], 238,79+55.6*i,120,25,"OFF");}
+		else if (celC[i+curr2].length<11){ctx.font = "700 17px Arial"; wrapText(celC[i+curr2], 238,79+55.6*i,100,25,"OFF");}
+		else{ctx.font = "700 16px Arial"; wrapText(celC[i+curr2], 238,79+55.6*i,100,25,"OFF");}
 		ctx.font = "900 20px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
 		ctx.fillText("$"+celV[i+curr2] + "M",356,92+55.6*i);
 		
-		if (celC[i+curr2] == "Bryce Dallas Howard"){ctx.font = "700 15px Arial";}
-		else if (celC[i+curr2].length<11){ctx.font = "700 17px Arial";}
-		else{ctx.font = "700 16px Arial";}
+		
 		ctx.fillStyle = "black"; ctx.textAlign = "center";
-		wrapText(celC[i+5+curr2], 238+326,79+55.6*i,100,25,"OFF");
+		
+		if (celC[i+5+curr2]=="Bryce Dallas Howard"){ctx.font = "700 15px Arial"; wrapText(celC[i+5+curr2], 238+326,79+55.6*i,120,25,"OFF");}
+		else if (celC[i+5+curr2].length<11){ctx.font = "700 17px Arial"; wrapText(celC[i+5+curr2], 238+326,79+55.6*i,100,25,"OFF");}
+		else{ctx.font = "700 16px Arial"; wrapText(celC[i+5+curr2], 238+326,79+55.6*i,100,25,"OFF");}
+		
+		
 		ctx.font = "900 20px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
 		ctx.fillText("$"+celV[i+5+curr2] + "M",356+326,92+55.6*i);
 		
@@ -828,7 +842,7 @@ if (mmode=="S"){
 		}
 		else{
 			ctx.drawImage(dec2,-145,11,800,400);
-			ctx.font = "900 15px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
+			ctx.font = "900 14px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
 			ctx.fillText(transV[celC.indexOf(sArray[0+curr])],184,350);
 		}
 	}
@@ -848,7 +862,7 @@ if (mmode=="S"){
 		}
 		else{
 			ctx.drawImage(dec2,-145+199,11,800,400);
-			ctx.font = "900 15px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
+			ctx.font = "900 14px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
 			ctx.fillText(transV[celC.indexOf(sArray[1+curr])],184+199,350);
 		}
 	}
@@ -869,7 +883,7 @@ if (mmode=="S"){
 		}
 		else{
 			ctx.drawImage(dec2,-145+199*2,11,800,400);
-			ctx.font = "900 15px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
+			ctx.font = "900 14px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
 			ctx.fillText(transV[celC.indexOf(sArray[2+curr])],184+199*2,350);
 		}
 		
