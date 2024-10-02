@@ -325,7 +325,8 @@ if (mmode=="B"){
 		if (curr2==0&&canvasX > 391 && canvasX < 524 && canvasY > 338 && canvasY < 384){curr2+=10; nodown=1;}
 		if (curr2>0){
 			if (nodown==0&&canvasX > 391 && canvasX < 457 && canvasY > 339 && canvasY < 382){curr2-=10; nodown=1;}
-			if (curr2!=40&&nodown==0&&canvasX > 459 && canvasX < 522 && canvasY > 337 && canvasY < 383){curr2+=10;}
+			if (curr2!=40&&nodown==0&&canvasX > 459 && canvasX < 522 && canvasY > 337 && canvasY < 383){curr2+=10; nodown=1;}
+			if (nodown==0&&curr2==40&&canvasX > 391 && canvasX < 524 && canvasY > 337 && canvasY < 384){curr2-=10;}
 		}
 	}
 	if (mov[0]==100){
