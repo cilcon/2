@@ -408,8 +408,7 @@ if (scene == "END"){
 			for (let i = 0; i < s2Array.length; i++){
 				atm[3]+=s2Array[i];
 			}
-			atm[3]+=money; 
-			printout+="Total Worth: $" + parseFloat(atm[3].toFixed(2)) + "M";
+			printout+="Total Worth: $" + atm[3].toFixed(1) + "M";
 			copytoclipboard(printout);
 			fade=1;sendScene="endscreen";
 		}
