@@ -409,7 +409,7 @@ if (scene == "END"){
 				atm[3]+=s2Array[i];
 			}
 			atm[3]+=money; 
-			printout+="Total Worth: $" + atm[3] + "M";
+			printout+="Total Worth: $" + parseFloat(atm[3].toFixed(2)) + "M";
 			copytoclipboard(printout);
 			fade=1;sendScene="endscreen";
 		}
