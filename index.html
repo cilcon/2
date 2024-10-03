@@ -510,8 +510,6 @@ var money = 20; var daynum=1;
 var mmode = "B"; var tnum=0;
 var celC = []; var celV = []; ditract(pArray,celC,celV);  bishuffle(celC,celV);
 
-//console.log(celC);
- console.log(celV);
 
 var transV = [];
 
@@ -535,7 +533,7 @@ for (let i = 0; i < celV.length; i++){
 var utimer=0;
 
 var seconds = new Date().getTime() / 1000; var supd = 0;
-console.log(seconds);
+
 
 var tlefti = 60*6;
 var tleft=tlefti;
@@ -678,9 +676,15 @@ if (supd-seconds>10){
 		
 		transV.push(parseFloat(atm[1].toFixed(2)));
 		celV[i]=parseFloat(celV[i].toFixed(2))
-		
+	
+	}
+
+	if (sArray.length>0){
 		for (let i = 0; i < sArray.length; i++){
 			s2Array[i]=celV[celC.indexOf(sArray[i],1)];
+			if (sArray[i]==celC[0]){
+				s2Array[i]=celV[0];
+			}
 		}
 	}
 	seconds = new Date().getTime() / 1000; supd = 0; tacc+=10; 
@@ -1287,7 +1291,7 @@ function checkKeyPressed(evt) {
 		if (guiA[0] == "A" && guiA[1] == "A" && guiA[2] == "A" && guiA[3] == "A"){sptout='for (let i = 0; i < 2; i++){for (let z = 0; z < 2; z++){'; copytoclipboard(sptout); triggerclear = 1;}
 		if (guiA[0] == "A" && guiA[1] == "A" && guiA[2] == "A" && guiA[3] == "A" && guiA[4] == "A"){sptout='ctx.shadowColor = "black"; ctx.shadowBlur = 10;'; copytoclipboard(sptout); guiA = []; triggerclear = 1;}
 		if (guiA[0] == "W" && guiA[1] == "1"){//X-Axis Selecting multiple
-			sptArray.push(canvasX);sptArray.push(canvasY); console.log(sptArray);
+			sptArray.push(canvasX);sptArray.push(canvasY);
 			if (guiA[4]=="1"){
 				sptout="for (let i = 0; i < 4; i++){if (canvasX > " + sptArray[0] + "+" + String(sptArray[4]-sptArray[0]) + "*i" + " && canvasX < " + sptArray[2] + "+" + String(sptArray[4]-sptArray[0]) + "*i" + " && canvasY > " + sptArray[3] + " && canvasY < " + sptArray[7] + "){\n\t\t\tsendName=[i]; mat[0]=i;\n\t\t}};";
 				copytoclipboard(sptout); triggerclear = 1;
