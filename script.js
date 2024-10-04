@@ -331,6 +331,7 @@ var sArray = []; var s2Array = []; var s3Array = [];
 var money = 20; var daynum = 1;
 var mmode = "B"; var tnum = 0;
 var celC = []; var celV = []; ditract(pArray, celC, celV); bishuffle(celC, celV);
+var celPriceHistory = [];
 
 
 var transV = [];
@@ -342,9 +343,15 @@ for (let i = 0; i < celV.length; i++) {
     else { celV[i] += atm[1]; }
 
     transV.push(parseFloat(atm[1].toFixed(2)));
-    celV[i] = parseFloat(celV[i].toFixed(2))
+    celV[i] = parseFloat(celV[i].toFixed(2));
+    //celPrice is 2D array, so put celV in make anonnymous array and push that
+    //Future Pushes will push prices elements into specific array indexes
+    celPriceHistory.push([celV[i]]);//Store Price History, 
 }
-
+for (let i = 0; i < 10; i++) {
+    //Populate with 10 rounds of price data
+    priceChange()
+}
 
 //sArray = ["Sydney Sweeney","Brie Larson","Emmy Rossum","Sarah Hyland",
 //	  "Sadie Sink","Amy Adams","Karen Fukuhara","Melissa Fumero",
@@ -482,24 +489,11 @@ function repeatOften() {
         if (fade == 0 && tleft <= 0) { fade = 1; sendScene = "END"; }
 
         if (supd - seconds > 10) {
-            transV = [];
-            for (let i = 0; i < celV.length; i++) {
-                atm[1] = 0.1; atm[2] = randInt(0, 100);
-                if (atm[2] < 50) { atm[1] = 0.2; }
-                if (atm[2] < 30) { atm[1] = 0.3; }
-                if (atm[2] < 10) { atm[1] = 0.4; }
-                if (atm[2] < 5) { atm[1] = 0.5; }
-                if (atm[2] < 2) { atm[1] = 0.6; }
-                atm[3] = randInt(1, 2); if (atm[3] == 1) { atm[1] = atm[1] * -1; }
-
-
-                if (celV[i] + atm[1] < 0.1) { celV[i] += atm[1] * -1; atm[1] = atm[1] * -1; }
-                else { celV[i] += atm[1]; }
-
-                transV.push(parseFloat(atm[1].toFixed(2)));
-                celV[i] = parseFloat(celV[i].toFixed(2))
-
-            }
+            //Moved Price Change Function to:
+            //1. Allow initialization call to have price history
+            //2. Test out different Algorithms
+            //3. Support Events (ie Market Crash etc..) based on time
+            priceChange()
 
             if (sArray.length > 0) {
                 for (let i = 0; i < sArray.length; i++) {
@@ -570,9 +564,10 @@ function repeatOften() {
                 if (celC[i + curr2] == "Bryce Dallas Howard") { ctx.font = "700 15px Arial"; wrapText(celC[i + curr2], 238, 79 + 55.6 * i, 120, 25, "OFF"); }
                 else if (celC[i + curr2].length < 11) { ctx.font = "700 17px Arial"; wrapText(celC[i + curr2], 238, 79 + 55.6 * i, 100, 25, "OFF"); }
                 else { ctx.font = "700 16px Arial"; wrapText(celC[i + curr2], 238, 79 + 55.6 * i, 100, 25, "OFF"); }
+                /*
                 ctx.font = "900 20px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
                 ctx.fillText("$" + celV[i + curr2] + "M", 356, 92 + 55.6 * i);
-
+                */
 
                 ctx.fillStyle = "black"; ctx.textAlign = "center";
 
@@ -580,10 +575,16 @@ function repeatOften() {
                 else if (celC[i + 5 + curr2].length < 11) { ctx.font = "700 17px Arial"; wrapText(celC[i + 5 + curr2], 238 + 326, 79 + 55.6 * i, 100, 25, "OFF"); }
                 else { ctx.font = "700 16px Arial"; wrapText(celC[i + 5 + curr2], 238 + 326, 79 + 55.6 * i, 100, 25, "OFF"); }
 
+                //ctx.fillStyle = "red";
+                //ctx.fillRect(295, 59 + 55.6 * i, 155, 50);
+                SimpleChart(celPriceHistory[i + curr2], 293, 59 + 55.6 * i, 163, 55);
+                //ctx.fillStyle = "blue";
+                //ctx.fillRect(295 + 326, 59 + 55.6 * i, 155, 50);
+                SimpleChart(celPriceHistory[i + 5 + curr2], 293 + 326, 59 + 55.6 * i, 163, 55);
 
+                /*
                 ctx.font = "900 20px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
                 ctx.fillText("$" + celV[i + 5 + curr2] + "M", 356 + 326, 92 + 55.6 * i);
-
                 if (transV[i + curr2] > 0) {
                     ctx.drawImage(inc, 0, 0 + 55.4 * i, 800, 400);
                     ctx.font = "900 10px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
@@ -605,6 +606,7 @@ function repeatOften() {
                     ctx.font = "900 10px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "left";
                     ctx.fillText(transV[i + 5 + curr2], 324 + 326, 80 + 55.4 * i);
                 }
+                    */
             }
 
             if (mov[0] > 0) {
@@ -851,6 +853,82 @@ function repeatOften() {
 }//END REPEAT OFTEN
 
 globalID = requestAnimationFrame(repeatOften);
+
+function priceChange() {
+    transV = [];
+    for (let i = 0; i < celV.length; i++) {
+
+        //ATM1 is the amount value
+        //ATM2 is random die roll between 1-100 ino lookup table to adjust ATM1
+        //ATM3 is a 50% coin flip to decide if up or down...
+
+        atm[1] = 0.1; atm[2] = randInt(0, 100);
+        if (atm[2] < 50) { atm[1] = 0.2; }
+        if (atm[2] < 30) { atm[1] = 0.3; }
+        if (atm[2] < 10) { atm[1] = 0.4; }
+        if (atm[2] < 5) { atm[1] = 0.5; }
+        if (atm[2] < 2) { atm[1] = 0.6; }
+        atm[3] = randInt(1, 2); if (atm[3] == 1) { atm[1] = atm[1] * -1; }
+
+        // Prevent price to drop bellow zero
+        if (celV[i] + atm[1] < 0.1) { celV[i] += atm[1] * -1; atm[1] = atm[1] * -1; }
+        else { celV[i] += atm[1]; }
+
+        transV.push(parseFloat(atm[1].toFixed(2)));
+        celV[i] = parseFloat(celV[i].toFixed(2))
+        //celPriceHistory is initialized for each celV as an array 
+        //Only push value into array
+        celPriceHistory[i].push(celV[i]);//Store Price History
+
+    }
+}
+
+function SimpleChart(data, x, y, chartWidth, chartHeight) {
+    const padding = 2;
+    //Scale should depend on MAX_PRICE
+    var scale = chartHeight / 7.5;
+    //Background
+    ctx.fillStyle = "#DDDDDD";
+    ctx.fillRect(x, y, chartWidth, chartHeight);
+
+    // Draw the axes
+    ctx.beginPath();
+
+    ctx.moveTo(x + padding, y + padding);
+    ctx.lineTo(x + padding, y + chartHeight - padding);
+    ctx.lineTo(x + chartWidth - padding, y + chartHeight - padding);
+    ctx.strokeStyle = 'black';
+    ctx.stroke();
+
+    // Draw the line
+
+    var x_old = x + padding
+    var y_old = y + chartHeight - padding - data[0] * scale
+    for (let i = 1; i < data.length; i++) {
+        //console.log("Data is:" + data[i]);
+        //Want to change stroke color each segment so i have to start a new line each time...
+        ctx.beginPath();
+        ctx.moveTo(x_old, y_old);
+        const x_local = x + padding + i * (chartWidth - 2 * padding) / (data.length - 1);
+        const y_local = y + chartHeight - padding - data[i] * scale;
+        ctx.lineTo(x_local, y_local);
+        if (y_old > y_local) {
+            //older> current; So we have a lower Y value; 
+            //But Y is counted from the top of the screen so we went 'up'
+            ctx.strokeStyle = 'green';
+        } else {
+            ctx.strokeStyle = 'red';
+        }
+        ctx.stroke();
+        x_old = x_local
+        y_old = y_local
+    }
+    //Print Stock price above
+    ctx.font = "900 14px Arial"; ctx.fillStyle = "black"; ctx.textAlign = "center";
+    ctx.fillText("$" + data[data.length - 1].toFixed(2), x + padding + chartWidth / 2, y + 7 * padding);
+
+
+}
 
 
 var demo1ext = ""; var demo2ext = ""; var demo3ext = "";
